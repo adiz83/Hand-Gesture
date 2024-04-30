@@ -1,0 +1,85 @@
+import cv2
+import mediapipe as mp
+import RPi.GPIO as GPIO
+import time
+
+# Define GPIO pins for IR emitter and button codes
+IR_EMITTER_PIN = 17
+
+BUTTON_CODES = {
+    "up": "0x320df02fd",
+    "down": "0x320df827d",
+    "right": "0x320df609f",
+    "left": "0x320dfe01f",
+    "volup": "0x320df40bf",
+    "voldown": "0x320dfc03f",
+    "ok": "0x320df22dd"
+}
+
+def send_ir_code(ir_code):
+    for _ in range(3):  # Send the code 3 times for reliability
+        for pulse in ir_code:
+            if pulse == '0':
+                GPIO.output(IR_EMITTER_PIN, GPIO.LOW)
+                time.sleep(0.0005)
+            elif pulse == '1':
+                GPIO.output(IR_EMITTER_PIN, GPIO.HIGH)
+                time.sleep(0.0005)
+                GPIO.output(IR_EMITTER_PIN, GPIO.LOW)
+                time.sleep(0.01)  # Gap between codes
+
+def up():
+    ir_code = BUTTON_CODES["up"]
+    send_ir_code(ir_code)
+    print(ir_code)
+    print("\n")
+
+def down():
+    ir_code = BUTTON_CODES["down"]
+    send_ir_code(ir_code)
+    print(ir_code)
+    print("\n")
+
+def right():
+    ir_code = BUTTON_CODES["right"]
+    send_ir_code(ir_code)
+    print(ir_code)
+    print("\n")
+
+def left():
+    ir_code = BUTTON_CODES["left"]
+    send_ir_code(ir_code)
+    print(ir_code)
+    print("\n")
+
+def volup():
+    ir_code = BUTTON_CODES["volup"]
+    send_ir_code(ir_code)
+    print(ir_code)
+    print("\n")
+
+def voldown():
+    ir_code = BUTTON_CODES["voldown"]
+    send_ir_code(ir_code)
+    print(ir_code)
+    print("\n")
+
+# Initialize GPIO and other necessary components
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(IR_EMITTER_PIN, GPIO.OUT, initial=GPIO.LOW)
+
+# Example usage
+up()
+time.sleep(1)
+down()
+time.sleep(1)
+right()
+time.sleep(1)
+left()
+time.sleep(1)
+volup()
+time.sleep(1)
+voldown()
+
+# Cleanup GPIO
+GPIO.cleanup()
